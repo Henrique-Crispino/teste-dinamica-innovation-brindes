@@ -46,7 +46,7 @@ const LoginForm = styled.form`
   max-width: 520px;
   height: 250px;
   padding: 20px;
-  background-color: rgba(114, 203, 16, 0.9); /* Slightly transparent background */
+  background-color: #82BE06; /* Slightly transparent background */
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  // Subtle shadow for the form
   align-items: center;
@@ -63,7 +63,7 @@ const InputContainer = styled.div`
 // Input field styling
 const Input = styled.input`
   padding: 15px;
-  padding-left: 40px;  // Space for the icon inside the input
+  padding-left: 60px;  // Space for the icon inside the input
   border-radius: 20px;
   border: 1px solid #ddd;
   width: 100%;
@@ -74,9 +74,46 @@ const Input = styled.input`
 const Icon = styled.div`
   position: absolute;
   top: 50%;
-  left: 10px;
-  transform: translateY(-50%);  // Vertically center the icon
-  color: #000;  // Black color for icons
+  left: 30px;
+  transform: translateY(-50%);
+  color: #000;
+`;
+
+const SubInfoBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 65%;
+  margin-bottom: 20px;
+  color: #fff;
+`;
+
+const CheckboxLabel = styled.label`
+  display: flex;
+  align-items: center;
+  color: #fff;
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-radius: 3px;
+    margin-right: 8px;
+    background-color: transparent; 
+
+    &:checked {
+      background-color: #FFF;
+    }
+  }
+`;
+
+const Link = styled.a`
+  color: #fff;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 // Submit button styling
@@ -161,6 +198,14 @@ const LoginPage = () => {
             required  // Make this field required
           />
         </InputContainer>
+
+        <SubInfoBox>
+          <CheckboxLabel>
+            <input type="checkbox" name="remember" id="remember" />
+            Manter logado
+          </CheckboxLabel>
+          <Link href="#">Esqueceu a senha?</Link>
+        </SubInfoBox>
 
         <Button type="submit">Login</Button>  {/* Submit button */}
       </LoginForm>
