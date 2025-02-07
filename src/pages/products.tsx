@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -53,7 +54,7 @@ const ProductCard = styled.div`
   text-align: center;
   width: 100%;
   min-width: 100px;
-  height: 350px; // Adjusted height for all cards
+  height: 420px; // Adjusted height for all cards
   font-family: Arial, sans-serif;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
@@ -161,6 +162,41 @@ const ConfirmButton = styled.button`
     background-color: #5ba80e;
   }
 `;
+
+const ColorSelectorBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: start;
+`;
+
+const ColorSelector = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 20px); /* Define colunas menores */
+  grid-template-rows: repeat(3, 20px); /* Define linhas menores */
+  gap: 4px; /* Ajuste conforme necessário */
+`;
+
+
+const ColorCircle = styled.div<{ color: string }>`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+  cursor: pointer;
+  border: 1px solid #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    border: 2px solid #000;
+  }
+`;
+
+const colors = [
+  "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF",
+  "#00FFFF", "#800000", "#808000", "#008000", "#800080",
+  "#008080", "#000080", "#FFA500", "#A52A2A", "#DEB887"
+];
 
 // Main component for the products page
 const ProductsPage = () => {
@@ -280,6 +316,14 @@ const ProductsPage = () => {
                     ? `${product.descricao.slice(0, 80)}...`
                     : product.descricao}
                 </ProductDescription>
+                <ColorSelectorBox>
+                  <span>Cores:</span>
+                  <ColorSelector>
+                    {colors.map((color) => (
+                      <ColorCircle key={color} color={color} />
+                    ))}
+                  </ColorSelector>
+                </ColorSelectorBox>
                 <ProductPrice>
                   <PriceLabel>A partir de:</PriceLabel>
                   <PriceValue>R$ {parseFloat(product.preco).toFixed(2)}</PriceValue>
