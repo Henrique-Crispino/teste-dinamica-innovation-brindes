@@ -9,6 +9,8 @@ const Container = styled.div`
   flex-direction: column;
   background-color: #f9f9f9;
   min-height: 100vh;
+  width: 100%;
+  padding: 0 20px;
 `;
 
 const FiltersSection = styled.div`
@@ -32,11 +34,14 @@ const Input = styled.input`
 
 const ProductsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 3rem;
   padding: 20px;
   justify-items: center;
+  align-items: center;
   margin-top: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
 `;
 
 const ProductCard = styled.div`
@@ -47,14 +52,15 @@ const ProductCard = styled.div`
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
   width: 100%;
-  max-width: 230px;
+  min-width: 100px;
+  height: 350px; // Adjusted height for all cards
   font-family: Arial, sans-serif;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 10px;
 
   &:hover {
     transform: translateY(-5px);
@@ -65,63 +71,91 @@ const ProductCard = styled.div`
 const ProductImage = styled.img`
   width: 100%;
   height: 150px;
-  object-fit: cover;
-  border-bottom: 1px solid #ddd;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  object-fit: contain;
+  margin-bottom: 10px;
 `;
 
 const ProductInfo = styled.div`
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-grow: 1;
+  justify-content: center;
 `;
 
 const ProductTitle = styled.h3`
-  font-size: 0.9rem;
-  color: #333;
-  margin: 5px 0;
+  font-size: 1.1rem;
+  color: #000;
   font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 50px;
 `;
 
 const ProductCode = styled.p`
-  font-size: 0.75rem;
-  color: #666;
-  margin: 5px 0;
+  font-size: 0.95rem;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 `;
 
 const ExclusiveTag = styled.span`
-  display: block;
-  font-size: 0.75rem;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  font-size: 0.8rem;
   color: #00a8e8;
   font-weight: bold;
-  margin-bottom: 5px;
+  text-transform: uppercase;
+  width: 100%;
 `;
 
 const ProductDescription = styled.p`
   font-size: 0.8rem;
   color: #666;
-  margin: 5px 0;
-  line-height: 1.3;
+  line-height: 1.4;
+  height: 50px;
 `;
 
-const ProductPrice = styled.p`
-  font-size: 1rem;
-  color: #72cb10;
+const ProductPrice = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: end;
+  color: #000;
+  width: 100%;
+`;
+
+const PriceLabel = styled.span`
+  display: flex;
+  font-size: 0.8rem;
+`;
+
+const PriceValue = styled.span`
+  font-size: 1.5rem;
   font-weight: bold;
-  margin: 8px 0;
+`;
+
+const PriceNote = styled.span`
+  font-size: 0.8rem;
 `;
 
 const ConfirmButton = styled.button`
   background-color: #72cb10;
   color: white;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: bold;
-  padding: 8px 15px;
+  padding: 10px 20px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 8px;
   text-transform: uppercase;
+  margin-top: 10px;
+  width: 110%;
 
   &:hover {
     background-color: #5ba80e;
@@ -130,7 +164,6 @@ const ConfirmButton = styled.button`
 
 // Main component for the products page
 const ProductsPage = () => {
-  // Interface for the product data
   interface Product {
     codigo: string;
     imagem: string;
@@ -139,7 +172,6 @@ const ProductsPage = () => {
     preco: string;
   }
 
-  // State variables for managing products, loading state, error messages, and filter inputs
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -147,34 +179,22 @@ const ProductsPage = () => {
   const [codigoProduto, setCodigoProduto] = useState<string>("");
   const router = useRouter();
 
-  // Effect hook to fetch products data from the API
   useEffect(() => {
-    const token = localStorage.getItem("token")?.toString();
+    const token = localStorage.getItem("token");
 
-    // Redirect to login if no token is found
     if (!token) {
       router.push("/login");
       return;
     }
 
-    // Skip fetch if the product code is too short
-    if (codigoProduto && codigoProduto.length < 4) {
-      return;
-    }
-
-    // Prepare request body and URL based on filter inputs
     const body = nomeProduto || codigoProduto ? {
       nome_produto: nomeProduto,
       codigo_produto: codigoProduto,
     } : {};
 
-    const url = nomeProduto || codigoProduto 
-      ? "https://apihomolog.innovationbrindes.com.br/api/innova-dinamica/produtos/listar" // Endpoint for POST with filter
-      : "https://apihomolog.innovationbrindes.com.br/api/innova-dinamica/produtos/listar"; // Endpoint for GET without filter
-
+    const url = "https://apihomolog.innovationbrindes.com.br/api/innova-dinamica/produtos/listar";
     const method = nomeProduto || codigoProduto ? "POST" : "GET";
 
-    // Fetch products data from the API
     fetch(url, {
       method,
       headers: {
@@ -192,14 +212,12 @@ const ProductsPage = () => {
         }
         setLoading(false);
       })
-      .catch((error) => {
-        console.error("Erro na requisição:", error);
+      .catch(() => {
         setError("Erro ao buscar os produtos.");
         setLoading(false);
       });
   }, [router, nomeProduto, codigoProduto]);
 
-  // Handlers for filter input changes
   const handleNomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNomeProduto(e.target.value);
   };
@@ -208,11 +226,10 @@ const ProductsPage = () => {
     setCodigoProduto(e.target.value);
   };
 
-  // Render loading, error, or no products found messages
   if (loading) return <p>Carregando...</p>;
   if (error) return <p>{error}</p>;
   if (products.length === 0) return (
-    <div>
+    <Container>
       <Header />
       <FiltersSection>
         <Input
@@ -229,10 +246,9 @@ const ProductsPage = () => {
         />
       </FiltersSection>
       <p>Nenhum produto encontrado.</p>
-    </div>
+    </Container>
   );
 
-  // Render the products grid
   return (
     <Container>
       <Header />
@@ -252,26 +268,27 @@ const ProductsPage = () => {
       </FiltersSection>
       <ProductsGrid>
         {products.map((product) => (
-          <ProductCard key={product.codigo}>
+          <div key={product.codigo}>
             <ProductTitle>{product.nome}</ProductTitle>
-            <ProductCode>{product.codigo}</ProductCode>
-            <ProductInfo>
-              <ExclusiveTag>EXCLUSIVO!</ExclusiveTag>
-              <ProductImage
-                src={product.imagem}
-                alt={product.nome}
-              />
-              <ProductDescription>
-                {product.descricao.length > 100
-                  ? `${product.descricao.slice(0, 100)}...`
-                  : product.descricao}
-              </ProductDescription>
-              <ProductPrice>
-                R$ {parseFloat(product.preco).toFixed(2)}
-              </ProductPrice>
-              <ConfirmButton>CONFIRA</ConfirmButton>
-            </ProductInfo>
-          </ProductCard>
+            <ProductCode>Código: {product.codigo}</ProductCode>
+            <ProductCard>
+              <ExclusiveTag>Exclusivo!</ExclusiveTag>
+              <ProductImage src={product.imagem} alt={product.nome} />
+              <ProductInfo>
+                <ProductDescription>
+                  {product.descricao.length > 80
+                    ? `${product.descricao.slice(0, 80)}...`
+                    : product.descricao}
+                </ProductDescription>
+                <ProductPrice>
+                  <PriceLabel>A partir de:</PriceLabel>
+                  <PriceValue>R$ {parseFloat(product.preco).toFixed(2)}</PriceValue>
+                  <PriceNote>gerado pela melhor oferta</PriceNote>
+                </ProductPrice>
+              </ProductInfo>
+            </ProductCard>
+            <ConfirmButton>Confira</ConfirmButton>
+          </div>
         ))}
       </ProductsGrid>
     </Container>
