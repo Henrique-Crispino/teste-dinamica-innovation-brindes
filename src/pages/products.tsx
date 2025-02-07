@@ -55,6 +55,7 @@ const ProductCard = styled.div`
   text-align: center;
   width: 100%;
   min-width: 100px;
+  max-width: 300px;
   height: 420px;
   font-family: Poppins, sans-serif;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -149,7 +150,7 @@ const PriceNote = styled.span`
 `;
 
 const ConfirmButton = styled.button`
-  background-color: #72cb10;
+  background-color: #82BE06;
   color: white;
   font-size: 0.9rem;
   font-weight: bold;
@@ -160,6 +161,7 @@ const ConfirmButton = styled.button`
   text-transform: uppercase;
   margin-top: 10px;
   width: 110%;
+  max-width: 320px;
 
   &:hover {
     background-color: #5ba80e;
@@ -226,13 +228,13 @@ const ProductsPage = () => {
       return;
     }
 
-    const body = nomeProduto || codigoProduto ? {
+    const body = nomeProduto || (codigoProduto.length === 4) ? {
       nome_produto: nomeProduto,
       codigo_produto: codigoProduto,
     } : {};
 
     const url = "https://apihomolog.innovationbrindes.com.br/api/innova-dinamica/produtos/listar";
-    const method = nomeProduto || codigoProduto ? "POST" : "GET";
+    const method = nomeProduto || (codigoProduto.length === 4) ? "POST" : "GET";
 
     fetch(url, {
       method,

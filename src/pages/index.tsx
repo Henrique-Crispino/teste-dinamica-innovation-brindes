@@ -34,7 +34,7 @@ const FormContainer = styled.div`
 const ContainerTitle = styled.h1`
   font-size: 2rem;
   margin-bottom: 2rem;
-  color: #72cb10;  // Green color
+  color: #82BE06;  // Green color
   text-align: center;  // Center the title
 `;
 
@@ -83,7 +83,7 @@ const Icon = styled.div`
 const Button = styled.button`
   padding: 15px;
   background-color: #fff;
-  color: #72cb10;  // Green color for button text
+  color: #82BE06;  // Green color for button text
   border: none;
   border-radius: 20px;
   cursor: pointer;
