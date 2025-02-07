@@ -12,6 +12,7 @@ const Container = styled.div`
   min-height: 100vh;
   width: 100%;
   padding: 0 20px;
+  font-family: Poppins, sans-serif;
 `;
 
 const FiltersSection = styled.div`
@@ -54,8 +55,8 @@ const ProductCard = styled.div`
   text-align: center;
   width: 100%;
   min-width: 100px;
-  height: 420px; // Adjusted height for all cards
-  font-family: Arial, sans-serif;
+  height: 420px;
+  font-family: Poppins, sans-serif;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
@@ -79,7 +80,6 @@ const ProductImage = styled.img`
 const ProductInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
   flex-grow: 1;
   justify-content: center;
 `;
@@ -92,11 +92,11 @@ const ProductTitle = styled.h3`
   justify-content: center;
   align-items: center;
   text-align: center;
-  height: 50px;
+  height: 35px;
 `;
 
 const ProductCode = styled.p`
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #000;
   display: flex;
   justify-content: center;
@@ -120,6 +120,7 @@ const ProductDescription = styled.p`
   color: #666;
   line-height: 1.4;
   height: 50px;
+  text-align: left;
 `;
 
 const ProductPrice = styled.div`
@@ -129,11 +130,13 @@ const ProductPrice = styled.div`
   justify-content: end;
   color: #000;
   width: 100%;
+  margin-top: 10px;
+  gap: 5px;
 `;
 
 const PriceLabel = styled.span`
   display: flex;
-  font-size: 0.8rem;
+  font-size: 1rem;
 `;
 
 const PriceValue = styled.span`
@@ -306,7 +309,7 @@ const ProductsPage = () => {
         {products.map((product) => (
           <div key={product.codigo}>
             <ProductTitle>{product.nome}</ProductTitle>
-            <ProductCode>Código: {product.codigo}</ProductCode>
+            <ProductCode>{product.codigo}</ProductCode>
             <ProductCard>
               <ExclusiveTag>Exclusivo!</ExclusiveTag>
               <ProductImage src={product.imagem} alt={product.nome} />
@@ -325,8 +328,8 @@ const ProductsPage = () => {
                   </ColorSelector>
                 </ColorSelectorBox>
                 <ProductPrice>
-                  <PriceLabel>A partir de:</PriceLabel>
-                  <PriceValue>R$ {parseFloat(product.preco).toFixed(2)}</PriceValue>
+                    <PriceLabel>a partir de:</PriceLabel>
+                    <PriceValue>R$ {parseFloat(product.preco).toFixed(2)}</PriceValue>
                   <PriceNote>gerado pela melhor oferta</PriceNote>
                 </ProductPrice>
               </ProductInfo>
